@@ -3,7 +3,15 @@ import React from "react";
 import "./App.css";
 import Menu from "./components/MenuComponent";
 import { Navbar, NavbarBrand } from "reactstrap";
+import {DISHES} from "./Shared/dishes";
+
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dishes: DISHES,
+    };
+  }
   render() {
     return (
       <div className="App">
@@ -12,7 +20,7 @@ class App extends React.Component {
             <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
           </div>
         </Navbar>
-        <Menu />
+        <Menu dishes={this.state.dishes} />
       </div>
       
     );
