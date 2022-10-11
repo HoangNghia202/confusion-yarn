@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
-import moment from "moment/moment";
 
 class DishDetail extends Component {
   constructor(props) {
@@ -35,13 +34,11 @@ class DishDetail extends Component {
           <p>{comment.comment}</p>
           <p>
             -- {comment.author}, &nbsp;
-            {/* {new Intl.DateTimeFormat("en-US", {
+            {new Intl.DateTimeFormat("en-US", {
               year: "numeric",
-              month: "long",
+              month: "short",
               day: "2-digit",
-            }).format(new Date(comment.date))} */
-            }
-            {moment(comment.date).format("MMM DD, YYYY")}
+            }).format(new Date(comment.date))}
           </p>
         </li>
       );
@@ -56,7 +53,7 @@ class DishDetail extends Component {
 
   render() {
     const dish = this.props.dish;
-    console.log('render check dish >>>',dish);
+    console.log("render check dish >>>", dish);
 
     if (dish == null) {
       return <div></div>;
@@ -66,9 +63,11 @@ class DishDetail extends Component {
     const dishComment = this.renderComments(dish.comments);
 
     return (
-      <div className="row">
-        {dishItem}
-        {dishComment}
+      <div className="container">
+        <div className="row">
+          {dishItem}
+          {dishComment}
+        </div>
       </div>
     );
   }
