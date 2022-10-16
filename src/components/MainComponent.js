@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Menu from "./MenuComponent";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
@@ -40,17 +40,18 @@ class Main extends Component {
       );
     };
 
-    const DishWithId = ({ match }) => {
+    const DishWithId = () => {
       console.log("match>>> run into dish with id");
+      const { dishId } = useParams();
       return (
         <DishDetail
         dish={
           this.state.dishes.filter(
-            (dish) => dish.id === parseInt(match.params.dishId, 10)
+            (dish) => dish.id === parseInt(dishId, 10)
           )[0]
         }
         comments={this.state.comments.filter(
-          (comment) => comment.dishId === parseInt(match.params.dishId, 10)
+          (comment) => comment.dishId === parseInt(dishId, 10)
         )}
         />
       );
@@ -65,7 +66,7 @@ class Main extends Component {
             path="/menu"
             element={<Menu dishes={this.state.dishes} />}
           />
-          <Route path="/menu/:dishId" element={DishWithId} />
+          <Route path="/menu/:dishId" element={<DishWithId/>} />
           <Route path="/aboutus" element={<AboutUs />}/>
           <Route path="/contactus" element={<Contact />} />
         </Routes>
