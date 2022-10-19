@@ -11,7 +11,6 @@ function Home(props) {
                   <CardTitle>{item.name}</CardTitle>
                   {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null}
                   <CardText>{item.description}</CardText>
-
               </CardBody>
           </Card>
       );
