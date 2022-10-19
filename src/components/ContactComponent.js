@@ -8,6 +8,7 @@ import {
   Label,
   Col,
   Button,
+  FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -173,6 +174,7 @@ class Contact extends Component {
                     onBlur={this.handleBlur("firstname")}
                     onChange={(event) => this.handleInputChange(event)}
                   ></Input>
+                  <FormFeedback>{errors.firstname}</FormFeedback>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -191,6 +193,7 @@ class Contact extends Component {
                     onBlur={this.handleBlur('lastname')}
                     onChange={this.handleInputChange}
                   ></Input>
+                   <FormFeedback>{errors.lastname}</FormFeedback>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -209,6 +212,7 @@ class Contact extends Component {
                     onBlur={this.handleBlur('telnum')}
                     onChange={this.handleInputChange}
                   ></Input>
+                   <FormFeedback>{errors.telnum}</FormFeedback>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -229,6 +233,7 @@ class Contact extends Component {
 
                   ></Input>
                 </Col>
+                <FormFeedback>{errors.email}</FormFeedback>
               </FormGroup>
 
               <FormGroup row>
