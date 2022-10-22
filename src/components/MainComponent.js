@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Menu from "./MenuComponent";
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes, useParams, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
@@ -12,14 +13,19 @@ import { COMMENTS } from "../Shared/comments";
 import { LEADERS } from "../Shared/leaders";
 import { PROMOTIONS } from "../Shared/promotions";
 import DishDetail from "./DishDetailComponent";
+
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders,
+  };
+};
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dishes: DISHES,
-      comments: COMMENTS,
-      promotions: PROMOTIONS,
-      leaders: LEADERS,
     };
   }
 
@@ -34,9 +40,9 @@ class Main extends Component {
     const HomePage = () => {
       return (
         <Home
-          dish={this.state.dishes.filter((dish) => dish.featured)[0]}
-          promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
-          leader={this.state.leaders.filter((leader) => leader.featured)[0]}
+          dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+          promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
+          leader={this.props.leaders.filter((leader) => leader.featured)[0]}
         />
       );
     };
@@ -47,11 +53,11 @@ class Main extends Component {
       return (
         <DishDetail
         dish={
-          this.state.dishes.filter(
+          this.props.dishes.filter(
             (dish) => dish.id === parseInt(dishId, 10)
           )[0]
         }
-        comments={this.state.comments.filter(
+        comments={this.props.comments.filter(
           (comment) => comment.dishId === parseInt(dishId, 10)
         )}
         />
@@ -65,10 +71,10 @@ class Main extends Component {
           <Route
             exact
             path="/menu"
-            element={<Menu dishes={this.state.dishes} />}
+            element={<Menu dishes={this.props.dishes} />}
           />
           <Route path="/menu/:dishId" element={<DishWithId/>} />
-          <Route path="/aboutus" element={<About leaders={this.state.leaders}/>}/>
+          <Route path="/aboutus" element={<About leaders={this.props.leaders}/>}/>
           <Route path="/contactus" element={<Contact />} />
         </Routes>
         <Footer></Footer>
@@ -77,4 +83,4 @@ class Main extends Component {
   }
 }
 
-export default Main;
+export default  connect(mapStateToProps)( Main);
