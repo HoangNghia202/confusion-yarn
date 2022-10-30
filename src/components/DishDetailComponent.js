@@ -10,7 +10,6 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-
 function RenderDish(dish) {
   if (dish != null) {
     return (
@@ -29,7 +28,7 @@ function RenderDish(dish) {
   }
 }
 
-function RenderComments(comments) {
+function RenderComments(comments, dishId, addComment) {
   if (comments == null) {
     return <div></div>;
   }
@@ -52,6 +51,7 @@ function RenderComments(comments) {
     <div>
       <h4> Comments </h4>
       <ul className="list-unstyled">{cmnts}</ul>
+      <CommentForm dishId={dishId} addComment={addComment} />
     </div>
   );
 }
@@ -77,8 +77,8 @@ const DishDetail = (props) => {
         <div className="row">
           <div className="col-12 col-md-5 m-1">{RenderDish(props.dish)}</div>
           <div className="col-12 col-md-5 m-1">
-            {RenderComments(props.comments)}
-            <CommentForm />
+            {RenderComments(props.comments, props.dish.id, props.addComment)}
+           
           </div>
         </div>
       </div>

@@ -5,13 +5,10 @@ import { connect } from "react-redux";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
-import AboutUs from "./AboutUsComponent";
 import About from "./AboutUsComponent";
 import Contact from "./ContactComponent";
-import { DISHES } from "../Shared/dishes";
-import { COMMENTS } from "../Shared/comments";
-import { LEADERS } from "../Shared/leaders";
-import { PROMOTIONS } from "../Shared/promotions";
+import {addComment} from "../Redux/ActionCreators";
+
 import DishDetail from "./DishDetailComponent";
 
 const mapStateToProps = (state) => {
@@ -22,21 +19,21 @@ const mapStateToProps = (state) => {
     leaders: state.leaders,
   };
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  addComment: (dishId, rating, author, comment) =>dispatch(addComment(dishId, rating, author, comment)),
+});
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
-
-  
 
   onDishSelect(dishId) {
     this.setState({ selectedDish: dishId });
   }
 
   render() {
-   
     const HomePage = () => {
       return (
         <Home
@@ -52,18 +49,19 @@ class Main extends Component {
       const { dishId } = useParams();
       return (
         <DishDetail
-        dish={
-          this.props.dishes.filter(
-            (dish) => dish.id === parseInt(dishId, 10)
-          )[0]
-        }
-        comments={this.props.comments.filter(
-          (comment) => comment.dishId === parseInt(dishId, 10)
-        )}
+          dish={
+            this.props.dishes.filter(
+              (dish) => dish.id === parseInt(dishId, 10)
+            )[0]
+          }
+          comments={this.props.comments.filter(
+            (comment) => comment.dishId === parseInt(dishId, 10)
+          )}
+          addComment={this.props.addComment }
         />
       );
     };
-    return (
+    return ( 
       <div>
         <Header></Header>
         <Routes>
@@ -73,8 +71,11 @@ class Main extends Component {
             path="/menu"
             element={<Menu dishes={this.props.dishes} />}
           />
-          <Route path="/menu/:dishId" element={<DishWithId/>} />
-          <Route path="/aboutus" element={<About leaders={this.props.leaders}/>}/>
+          <Route path="/menu/:dishId" element={<DishWithId />} />
+          <Route
+            path="/aboutus"
+            element={<About leaders={this.props.leaders} />}
+          />
           <Route path="/contactus" element={<Contact />} />
         </Routes>
         <Footer></Footer>
@@ -83,4 +84,4 @@ class Main extends Component {
   }
 }
 
-export default  connect(mapStateToProps)( Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
