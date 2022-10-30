@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import CommentForm from "./CommentFormComponent";
 import {
   Card,
   CardImg,
@@ -77,6 +78,7 @@ const DishDetail = (props) => {
           <div className="col-12 col-md-5 m-1">{RenderDish(props.dish)}</div>
           <div className="col-12 col-md-5 m-1">
             {RenderComments(props.comments)}
+            <CommentForm />
           </div>
         </div>
       </div>
