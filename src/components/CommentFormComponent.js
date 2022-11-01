@@ -51,7 +51,6 @@ class CommentForm extends Component{
                 <Modal isOpen={this.state.isCommentFormModalOpen} toggle={this.toggleCommentFormModal} >
                     <ModalHeader toggle={this.toggleCommentFormModal}> Submit Comment </ModalHeader>
                     <ModalBody>
-                       
                         <LocalForm onSubmit={(values) => this.handleCommentFormSubmit(values)}>
                           
                             {/* rating */}
@@ -108,11 +107,7 @@ class CommentForm extends Component{
                                     />                                    
                                 </Col>
                             </Row>
-
-
-
-
-                            {/* comment */}
+                                        {/* commnent */}
                             <Row className="form-group">
                                 <Label htmlFor="comment" md={12}>Comment</Label>
                                 <Col md={12}>
@@ -132,7 +127,6 @@ class CommentForm extends Component{
                                         }}
                                     />  
                                 </Col>
-
                             </Row>
 
                             {/* submit button */}
@@ -143,13 +137,9 @@ class CommentForm extends Component{
                                     </Button>
                                 </Col>
                             </Row>
-
                         </LocalForm>
-
                     </ModalBody>
                 </Modal>
-
-
             </React.Fragment>
         );
     }

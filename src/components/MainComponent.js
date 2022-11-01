@@ -7,9 +7,10 @@ import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
 import About from "./AboutUsComponent";
 import Contact from "./ContactComponent";
-import {addComment} from "../Redux/ActionCreators";
-
+import {addComment,fetchDishes } from "../Redux/ActionCreators";
 import DishDetail from "./DishDetailComponent";
+import {actions} from 'react-redux-form';
+
 
 const mapStateToProps = (state) => {
   return {
@@ -22,6 +23,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) =>dispatch(addComment(dishId, rating, author, comment)),
+  fetchDishes:()=> dispatch(fetchDishes()),
+  resetFeedbackForm:()=>{dispatch(actions.reset('feedback'))}
 });
 class Main extends Component {
   constructor(props) {
@@ -33,13 +36,19 @@ class Main extends Component {
     this.setState({ selectedDish: dishId });
   }
 
+  componentDidMount() {
+    this.props.fetchDishes();
+  }
+
   render() {
     const HomePage = () => {
       return (
         <Home
-          dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+          dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
           promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
           leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+          dishesLoading={this.props.dishes.isLoading}
+          dishesErrMess={this.props.dishes.errMess}
         />
       );
     };
@@ -50,7 +59,7 @@ class Main extends Component {
       return (
         <DishDetail
           dish={
-            this.props.dishes.filter(
+            this.props.dishes.dishes.filter(
               (dish) => dish.id === parseInt(dishId, 10)
             )[0]
           }
@@ -58,6 +67,7 @@ class Main extends Component {
             (comment) => comment.dishId === parseInt(dishId, 10)
           )}
           addComment={this.props.addComment }
+          isLoading={this.props.dishes.isLoading}
         />
       );
     };
@@ -69,14 +79,14 @@ class Main extends Component {
           <Route
             exact
             path="/menu"
-            element={<Menu dishes={this.props.dishes} />}
+            element={<Menu dishes={this.props.dishes.dishes} />}
           />
           <Route path="/menu/:dishId" element={<DishWithId />} />
           <Route
             path="/aboutus"
             element={<About leaders={this.props.leaders} />}
           />
-          <Route path="/contactus" element={<Contact />} />
+          <Route path="/contactus" element={<Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
         </Routes>
         <Footer></Footer>
       </div>
