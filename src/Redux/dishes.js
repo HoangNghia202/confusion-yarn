@@ -1,4 +1,4 @@
-import { DISHES } from "../Shared/dishes";
+
 import * as ActionTypes from "./ActionTypes";
 
 export const Dishes = (

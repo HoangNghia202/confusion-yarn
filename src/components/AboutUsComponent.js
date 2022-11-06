@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Stagger,Fade } from "react-animation-components";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,15 +9,17 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import{baseUrl} from '../Shared/baseUrl';
 
 const renderLeaders = (leaders) => {
   console.log("check leaders >>>", leaders);
   let leader = leaders.map((leader) => {
     return (
+      <Fade in>  
       <Media className="mt-5">
         <Media left href="#">
           <div className="container">
-            <Media object src={leader.image} alt="Generic placeholder image" />
+            <Media object src={baseUrl+leader.image} alt="Generic placeholder image" />
           </div>
         </Media>
         <Media body>
@@ -27,6 +30,7 @@ const renderLeaders = (leaders) => {
           </div>
         </Media>
       </Media>
+      </Fade>
     );
   });
 
@@ -111,7 +115,11 @@ function About(props) {
           <h2>Corporate Leadership</h2>
         </div>
         <div className="col-12">
-          <Media list>{renderLeaders(props.leaders)}</Media>
+          <Media list>
+            <Stagger in>
+            {renderLeaders(props.leaders)}
+            </Stagger>
+            </Media>
         </div>
       </div>
     </div>

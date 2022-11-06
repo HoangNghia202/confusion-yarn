@@ -12,6 +12,8 @@ import {
   fetchDishes,
   fetchComments,
   fetchPromos,
+  fetchLeaders,
+  postFeedback,
 } from "../Redux/ActionCreators";
 import DishDetail from "./DishDetailComponent";
 import { actions } from "react-redux-form";
@@ -28,13 +30,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   postComment: (dishId, rating, author, comment) =>
-    dispatch(postComment(dishId, rating, author, comment)),
+  dispatch(postComment(dishId, rating, author, comment)),
+  postFeedback: (firstname, lastname, telnum, email,agree,contactType,message) => dispatch(postFeedback(firstname, lastname, telnum, email,agree,contactType,message)),
   fetchDishes: () => dispatch(fetchDishes()),
   resetFeedbackForm: () => {
     dispatch(actions.reset("feedback"));
   },
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
 });
 class Main extends Component {
   constructor(props) {
@@ -50,6 +54,7 @@ class Main extends Component {
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
+    this.props.fetchLeaders();
   }
 
   render() {
@@ -59,6 +64,7 @@ class Main extends Component {
           dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
           dishesLoading={this.props.dishes.isLoading}
           dishesErrMess={this.props.dishes.errMess}
+
           promotion={
             this.props.promotions.promotions.filter(
               (promo) => promo.featured
@@ -66,7 +72,10 @@ class Main extends Component {
           }
           promosLoading={this.props.promotions.isLoading}
           promosErrMess={this.props.promotions.errMess}
-          leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+
+          leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+          leadersLoading={this.props.leaders.isLoading}
+          leadersErrMess={this.props.leaders.errMess}
         />
       );
     };
@@ -110,12 +119,12 @@ class Main extends Component {
               <Route path="/menu/:dishId" element={<DishWithId />} />
               <Route
                 path="/aboutus"
-                element={<About leaders={this.props.leaders} />}
+                element={<About leaders={this.props.leaders.leaders} />}
               />
               <Route
                 path="/contactus"
                 element={
-                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
+                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback}/>
                 }
               />
             </Routes>
