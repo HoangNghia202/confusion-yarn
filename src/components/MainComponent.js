@@ -7,10 +7,15 @@ import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
 import About from "./AboutUsComponent";
 import Contact from "./ContactComponent";
-import {addComment,fetchDishes, fetchComments,fetchPromos } from "../Redux/ActionCreators";
+import {
+  postComment,
+  fetchDishes,
+  fetchComments,
+  fetchPromos,
+} from "../Redux/ActionCreators";
 import DishDetail from "./DishDetailComponent";
-import {actions} from 'react-redux-form';
-
+import { actions } from "react-redux-form";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 const mapStateToProps = (state) => {
   return {
@@ -22,11 +27,14 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  addComment: (dishId, rating, author, comment) =>dispatch(addComment(dishId, rating, author, comment)),
-  fetchDishes:()=> dispatch(fetchDishes()),
-  resetFeedbackForm:()=>{dispatch(actions.reset('feedback'))},
-  fetchComments:()=>dispatch(fetchComments()),
-  fetchPromos:()=>dispatch(fetchPromos()),
+  postComment: (dishId, rating, author, comment) =>
+    dispatch(postComment(dishId, rating, author, comment)),
+  fetchDishes: () => dispatch(fetchDishes()),
+  resetFeedbackForm: () => {
+    dispatch(actions.reset("feedback"));
+  },
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
 });
 class Main extends Component {
   constructor(props) {
@@ -51,10 +59,13 @@ class Main extends Component {
           dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
           dishesLoading={this.props.dishes.isLoading}
           dishesErrMess={this.props.dishes.errMess}
-          promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
+          promotion={
+            this.props.promotions.promotions.filter(
+              (promo) => promo.featured
+            )[0]
+          }
           promosLoading={this.props.promotions.isLoading}
           promosErrMess={this.props.promotions.errMess}
-    
           leader={this.props.leaders.filter((leader) => leader.featured)[0]}
         />
       );
@@ -71,33 +82,45 @@ class Main extends Component {
             )[0]
           }
           isLoading={this.props.dishes.isLoading}
-         
           errMess={this.props.dishes.errMess}
           commentsErrMess={this.props.comments.errMess}
           comments={this.props.comments.comments.filter(
             (comment) => comment.dishId === parseInt(dishId, 10)
           )}
-          addComment={this.props.addComment }
+          postComment={this.props.postComment}
         />
       );
     };
-    return ( 
+    return (
       <div>
         <Header></Header>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            exact
-            path="/menu"
-            element={<Menu dishes={this.props.dishes.dishes} />}
-          />
-          <Route path="/menu/:dishId" element={<DishWithId />} />
-          <Route
-            path="/aboutus"
-            element={<About leaders={this.props.leaders} />}
-          />
-          <Route path="/contactus" element={<Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
-        </Routes>
+        <TransitionGroup>
+          <CSSTransition
+            key={this.props.location}
+            classNames="page"
+            timeout={300}
+          >
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route
+                exact
+                path="/menu"
+                element={<Menu dishes={this.props.dishes.dishes} />}
+              />
+              <Route path="/menu/:dishId" element={<DishWithId />} />
+              <Route
+                path="/aboutus"
+                element={<About leaders={this.props.leaders} />}
+              />
+              <Route
+                path="/contactus"
+                element={
+                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
+                }
+              />
+            </Routes>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer></Footer>
       </div>
     );

@@ -10,6 +10,7 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import{baseUrl} from '../Shared/baseUrl';
+import {FadeTransform} from 'react-animation-components'
 function Home(props) {
   console.log("check props home>>> ", props);
 
@@ -20,6 +21,12 @@ function Home(props) {
       return <h4>{errMess}</h4>;
     } else
       return (
+        <FadeTransform
+          in 
+          transformProps={{
+            exitTransform: 'scale(0.5) translateY(-50%)'
+          }}
+        >
         <Card>
           <CardImg width="100%" src={baseUrl+item.image} alt={item.name} />
           <CardBody>
@@ -30,6 +37,7 @@ function Home(props) {
             <CardText>{item.description}</CardText>
           </CardBody>
         </Card>
+        </FadeTransform>
       );
   };
   return (
