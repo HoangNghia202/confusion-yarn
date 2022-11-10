@@ -6,7 +6,8 @@ This project is a web-page about a restaurant.
 ## `Technology`
 ReactJs (class component and hook).\
 Redux.\
-REST API
+Bootstrap.\
+REST API.
 
 ## `Main funtions`
 CRUD.\
